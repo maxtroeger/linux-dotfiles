@@ -1,0 +1,7 @@
+#!/bin/sh
+
+vol=$(pamixer --get-volume)
+pre="vol"
+[ "$(pamixer --get-volume-human)" = "muted" ] && pre="mute"
+
+printf '%s' " [$pre $vol%]"

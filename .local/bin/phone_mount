@@ -1,0 +1,5 @@
+#!/bin/sh
+
+[ -d "/mnt/phone/" ] && \
+sudo simple-mtpfs --device 1 "/mnt/phone/" -o allow_other || \
+printf "%s\n" "Something went wrong. Check if the phone directory exists"

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+xrandr --output DP2 --primary --mode 1920x1080 --left-of LVDS1
+remap
+setbg

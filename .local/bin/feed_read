@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cat ~/.config/sfeed/feeds/* | cut -f3 | uniq > ~/.config/sfeed/.read
+kill -41 "$(pidof dwmblocks)"

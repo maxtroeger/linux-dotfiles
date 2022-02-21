@@ -1,0 +1,7 @@
+#!/bin/sh
+
+pgrep transmission >/dev/null 2>&1 || exit
+run=$(transmission-remote -l | grep -e "Downloading" -e "Idle" -e "Up & Down" | wc -l | tr ' ' '\0')
+[ "$run" = "0" ] && exit
+
+printf '%s' " [tor $run]"

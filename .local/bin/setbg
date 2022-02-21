@@ -1,0 +1,8 @@
+#!/bin/sh
+
+[ -z "$1" ] && xwallpaper --zoom "$HOME/.config/wall.png" && exit 0
+
+file=$(readlink -f "$1")
+cp "$file" "$HOME/.config/wall.png" && \
+xwallpaper --zoom "$HOME/.config/wall.png" && \
+notify-send --icon="$HOME/.config/wall.png" "Wallpaper changed"

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+basename="$(echo "$1" | sed 's/\.[^\/.]*$//')"
+
+case "$1" in
+	*.tex |*.ms |*.mom |*.me) zathura "$basename".pdf ;;
+	*.html) "$BROWSER" "$basename".html >/dev/null 2>&1 ;;
+esac

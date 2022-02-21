@@ -1,0 +1,4 @@
+#!/bin/sh
+
+selection=$(tac "$HOME/.cache/web/search_history" | dmenu -l 30 -i -p "Searching:")
+[ -z "$selection" ] || (echo "$selection" | sed 's/'\''/%27/g;s/'\"'/%22/g;s/[[:space:]]/%20/g;s/\!/%21/g;s/\+/%2B/g' | xargs -r -I {} "$BROWSER" "https://search.canoemail.net/search?q={}";grep -q "$selection" "$HOME/.cache/web/search_history" || echo "$selection" >> "$HOME/.cache/web/search_history")

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+commands="\
+open in browser
+play in mpv
+queue for download"
+
+choice="$(echo "$commands" | dmenu -p "What would you like to do?")" || exit 1
+
+case $choice in
+	"open in browser")	"$BROWSER" "$1" ;;
+	"play in mpv")		mpv --ytdl-raw-options=format="best[height=720]" "$1" || mpv "$1" ;;
+	"queue for download")	nqdl "$1" ;;
+esac

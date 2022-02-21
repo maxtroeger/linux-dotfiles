@@ -1,0 +1,9 @@
+#!/bin/sh
+
+choice=$(printf "%b" "bookmark\nurl\nsearch" | dmenu -p "Surf the web:")
+
+case "$choice" in
+	"url") dmenu -p "Enter URL:" <&- | xargs -r -I {} "$BROWSER" "{}" ;;
+	"bookmark") web_bookmark ;;
+	"search") web_search ;;
+esac

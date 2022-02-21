@@ -1,0 +1,7 @@
+#!/bin/sh
+
+selection=$(cat "$HOME/dox/bmarks" | grep -v -e "^#" -e "^$" | dmenu -l 30 -i -p "Open:")
+
+[ -z "$selection" ] && exit
+
+echo "$selection" | sed 's/.*https/https/' | xargs -r -I {} "$BROWSER" "{}"

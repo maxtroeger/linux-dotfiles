@@ -1,0 +1,3 @@
+#!/bin/sh
+
+rsync -rv --del /home/max/dox/canoemail/ canoe:/var/www/canoemail.net/

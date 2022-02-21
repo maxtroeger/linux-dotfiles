@@ -1,0 +1,3 @@
+#!/bin/sh
+
+rsync -rv --del /home/max/dox/noplacetobe.net/ www:/var/www/noplacetobe.net/

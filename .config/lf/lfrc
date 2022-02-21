@@ -1,0 +1,38 @@
+set shell sh
+set shellopts '-eu'
+set ifs "\n"
+set scrolloff 10
+set period 1
+
+# Vars that depend on environmental variables
+$lf -remote "send $id set previewer $HOME/.config/lf/scope"
+
+# cmds/functions
+cmd open ${{
+    case $(file --mime-type $f -b) in
+	image/vnd.djvu|application/pdf|application/octet-stream) zathura $fx >/dev/null 2>&1 ;;
+	application/epub+zip) zathura $fx >/dev/null 2>&1 ;;
+    	text/troff) man ./ $f;;
+        text/*) $EDITOR $fx;;
+	image/x-xcf|image/svg+xml) gimp $f >/dev/null 2>&1 & ;;
+	image/*) sxiv -a $f $(printf '%s\n' "$(find . -maxdepth 1 -type f | sort | grep -e "jpg" -e "gif" -e "png" | grep -v "./${f##*/}")");;
+	audio/*) mpv $f ;;
+	video/*) mpv $f -quiet >/dev/null 2>&1 ;;
+	application/csv|application/vnd.openxmlformats-officedocument.spreadsheetml.sheet|application/vnd.ms-excel) scim $fx ;;
+        *) for f in $fx; do setsid $OPENER $f >/dev/null 2>&1 & done;;
+    esac
+}}
+
+# Bindings
+map <c-n> push :mkdir<space>
+map <c-r> reload
+map <enter> shell
+
+# Shortcut
+map gd cd ~/dox
+map gm cd ~/dox/mail/rpi
+map gcl cd ~/dox/classes
+map glb cd ~/.local/bin
+map grr cd ~/.local/src
+map gsc cd ~/.scripts
+map gcfg cd ~/.config

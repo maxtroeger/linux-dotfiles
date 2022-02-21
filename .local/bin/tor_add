@@ -1,0 +1,5 @@
+#!/bin/sh
+
+export $(awk 'FNR==6' $HOME/.dbus/session-bus/1aabe51788dbb5f513341ad360412eb9-0 | sed 's/'\''//g')
+pgrep transmission >/dev/null || (transmission-daemon && notify-send "Starting transmission daemon..." && sleep 3)
+transmission-remote -a "$@" && notify-send "Torrent added."

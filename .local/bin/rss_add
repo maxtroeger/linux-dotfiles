@@ -1,0 +1,15 @@
+#!/bin/sh
+
+[ -z "$1" ] && exit
+
+title=$(dmenu -p "Feed title?" <&-)
+
+[ -z "$title" ] && exit
+
+content="$(mktemp)";
+trap 'rm -f "$content"' 0 1 2 3 15
+echo "\
+	feed \"$title\" \"$1\"" > "$content"
+
+export $(awk 'FNR==6' $HOME/.dbus/session-bus/1aabe51788dbb5f513341ad360412eb9-0 | sed 's/'\''//g')
+sed -i "/\# start/r $content" "$HOME/.config/sfeed/sfeedrc" && notify-send "RSS add" "\"$title\" added"

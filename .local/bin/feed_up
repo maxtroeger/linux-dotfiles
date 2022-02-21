@@ -1,0 +1,12 @@
+#!/bin/sh
+
+echo "Syncing feeds...\n"
+
+sfeed_update "$HOME/.config/sfeed/sfeedrc"
+
+FEED=$(($(cut -f3 "$HOME"/.config/sfeed/feeds/* | uniq | wc -l) - $(cat "$SFEED_URL_FILE" | uniq | wc -l | tr ' ' '\0')))
+
+kill -41 "$(pidof dwmblocks)"
+[ "$FEED" != 0 ] && echo "\n$FEED new/unread items"
+echo "\nFeed sync complete\nPress <Enter> to exit"
+read -r _

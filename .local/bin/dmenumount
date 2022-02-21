@@ -1,0 +1,21 @@
+#!/bin/sh
+
+LIST=$(lsblk -nr | awk '$1~/sd[b-z][[:digit:]]/ && $7==""' | awk '{print "/dev/"$1" ("$4")"}')
+
+[ -z "$LIST" ] &&
+        notify-send "No drives to mount" && exit
+
+DRIVE=$(echo "$LIST" | dmenu -p "Mount which drive?" | cut -d' ' -f1)
+
+[ -z "$DRIVE" ] && exit
+
+if $(sudo mount "$DRIVE"); then
+        notify-send "$DRIVE mounted" "Entry found in /etc/fstab"
+        exit
+fi
+if $(DIR=$(find /mnt -maxdepth 1 | grep -v "/mnt$" | dmenu -p "Mount where?") ; sudo mount "$DRIVE" "$DIR"); then
+        [ -z "$DIR" ] && exit
+        notify-send "$DRIVE mounted" "$DIR"
+        exit
+fi
+notify-send "Mount failed"

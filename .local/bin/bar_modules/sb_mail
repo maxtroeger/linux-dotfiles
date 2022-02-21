@@ -1,0 +1,5 @@
+#!/bin/sh
+
+NEW=$(find "$HOME"/.local/share/mail/*/*/new/ -type f | wc -l | tr ' ' '\0' 2>/dev/null)
+[ "$NEW" = "0" ] && exit
+printf '%s' " [mail $NEW]"
