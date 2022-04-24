@@ -1,6 +1,0 @@
-#!/bin/sh
-
-[ ! -d "$HOME/pix/scrot" ] && mkdir -p "$HOME/pix/scrot"
-file="$HOME/pix/scrot/scrot-full-$(date '+%y%m%d-%H%M-%S').png"
-maim -u "$file"
-notify-send --icon="$file" "Screenshot taken" "$(basename $file)"

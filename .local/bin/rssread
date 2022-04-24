@@ -1,0 +1,3 @@
+#!/bin/sh
+
+cut -f3 "$HOME"/.config/sfeed/feeds/* | uniq > "$SFEED_URL_FILE"

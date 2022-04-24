@@ -4,4 +4,6 @@ selection=$(cat "$HOME/dox/bmarks" | grep -v -e "^#" -e "^$" | dmenu -l 30 -i -p
 
 [ -z "$selection" ] && exit
 
-echo "$selection" | sed 's/.*https/https/' | xargs -r -I {} "$BROWSER" "{}"
+echo  "$selection" | grep "(school)" && echo "$selection" | sed 's/.*http/http/' | xargs -r -I {} "schoolfox" "{}" && exit
+
+echo "$selection" | sed 's/.*http/http/' | xargs -r -I {} "$BROWSER" "{}"

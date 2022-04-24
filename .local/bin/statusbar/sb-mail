@@ -1,0 +1,16 @@
+#!/bin/sh
+
+case $BLOCK_BUTTON in
+	1) setsid -f "$TERMINAL" -e neomutt ;;
+	2) setsid -f "$TERMINAL" -e sb-syncmail ;;
+	3) notify-send "📬 Mail module" "\- Shows unread mail
+- Shows 🔃 if syncing mail
+- Left click opens neomutt
+- Middle click syncs mail" ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+NEW=$(find "$HOME"/.local/share/mail/*/*/new/ -type f | wc -l | tr ' ' '\0' 2>/dev/null)
+[ "$NEW" = "0" ] && exit
+printf '%s' " 📬$NEW"
+#printf '%s' " [mail $NEW]"

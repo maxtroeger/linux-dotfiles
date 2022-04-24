@@ -1,0 +1,7 @@
+#!/bin/sh
+
+dock() {
+	xrandr --output DP2 --primary --mode 1920x1080 --left-of LVDS1
+}
+
+[ -z "$(xrandr | grep 'DP2 connected primary')" ]  && dock && setbg

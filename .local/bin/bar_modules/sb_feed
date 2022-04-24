@@ -1,6 +1,0 @@
-#!/bin/sh
-
-FEED=$(($(cut -f3 "$HOME"/.config/sfeed/feeds/* | uniq | wc -l) - $(cat "$SFEED_URL_FILE" | uniq | wc -l | tr ' ' '\0')))
-[ "$FEED" -lt "0" ] && exit
-[ "$FEED" = "0" ] && exit
-printf '%s' " [feed $FEED]"

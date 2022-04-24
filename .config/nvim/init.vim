@@ -30,6 +30,9 @@ call plug#end()
 " Autocomp
 	set wildmode=longest,list,full
 
+" Save without exit
+	noremap ZX :up<cr>
+
 " Better split nav
 	map <C-h> <C-w>h
 	map <C-j> <C-w>j
@@ -47,6 +50,10 @@ call plug#end()
 
 " Goyo!!
 	map <leader>f :Goyo \| set linebreak \| hi Normal guibg=NONE ctermbg=NONE<CR>
+	"map <leader>f :Goyo \| set bg=light \| set linebreak<CR>
+
+" Save file as sudo on files that require root permission
+	cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
 
 "" Enable Goyo for mutt writing
 	autocmd BufEnter /tmp/neomutt* :Goyo 80
@@ -63,6 +70,9 @@ call plug#end()
 
 " Spell check
 	map <leader>o :setlocal spell! spelllang=en_us<CR>
+
+" Word count
+	map <leader>w :'<,'>:w !wc -w<CR>
 
 " Compile code
 	map <leader>c :w! \| !compiler <c-r>%<CR>
@@ -87,9 +97,13 @@ call plug#end()
 	autocmd BufRead,BufNewFile *.tex set filetype=tex
 	autocmd VimLeave *.tex !texclear %
 
+" Shellcheck
+	map <leader>s :!clear && shellcheck -x %<CR>
+
 " autocmd for specific files
 "" Status bar for DWM
 	"autocmd BufWritePost *dwmbar !killall dwmbar; setsid dwmbar &
+	autocmd BufWritePost ~/.local/src/dwmblocks/config.h !cd ~/.local/src/dwmblocks/; sudo make install && { killall -q dwmblocks;setsid -f dwmblocks }
 
 " Function for toggling the bottom statusbar:
 	let s:hidden_all = 1

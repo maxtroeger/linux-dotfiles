@@ -1,0 +1,47 @@
+#!/bin/sh
+
+##/usr/bin/grep -xq 'down' /sys/class/net/e*/operstate 2>/dev/null && \
+##	/usr/bin/grep -xq 'down' /sys/class/net/w*/operstate 2>/dev/null && \
+##	exit 0
+##
+##/usr/bin/mbsync -c "/home/max/.config/mbsync/config" -a 2>/dev/null 1>&2
+##/usr/bin/notmuch --config="/home/max/.config/notmuch/config" new 2>/dev/null 1>&2
+##/usr/bin/kill -42 "$(pidof dwmblocks)"
+
+. "/home/max/.zprofile"
+
+/usr/bin/grep -xq 'down' /sys/class/net/e*/operstate && \
+	/usr/bin/grep -xq 'down' /sys/class/net/w*/operstate && \
+	exit 0
+
+MBSYNCRC="/home/max/.config/mbsync/config"
+NOTMUCHRC="/home/max/.config/notmuch/config"
+pgrepoutput="$(pgrep -a Xorg)"
+displays="$(echo "$pgrepoutput" | grep -wo "[0-9]*:[0-9]\+" | sort -u)"
+notify() { [ -n "$pgrepoutput" ] && for x in ${displays:-0:}; do
+		export DISPLAY=$x
+		notify-send --app-name="Mail Update" "New mail!" "📬 $2 new mail(s) in \`$1\` account."
+	done ;}
+
+accounts="$(awk '/^Channel/ {print $2}' "$MBSYNCRC")"
+syncnotify() {
+	acc="$(echo "$account" | sed "s/.*\///")"
+	mbsync -c "$MBSYNCRC" "$acc" 2>/dev/null 1>&2
+	new=$(find\
+		"/home/max/.local/share/mail/$acc/INBOX/new/"\
+		-type f -newer "/home/max/.config/neomutt/.mailsynclastrun" 2> /dev/null)
+	newcount=$(echo "$new" | sed '/^\s*$/d' | wc -l)
+	case 1 in
+		$((newcount > 0)) ) notify "$acc" "$newcount" ;;
+	esac
+	/usr/bin/kill -42 "$(pidof dwmblocks)"
+}
+
+for account in $accounts; do
+	syncnotify &
+done
+
+wait
+
+/usr/bin/notmuch --config="$NOTMUCHRC" new 2>/dev/null 1>&2
+touch "/home/max/.config/neomutt/.mailsynclastrun"

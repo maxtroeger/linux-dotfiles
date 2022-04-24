@@ -1,6 +1,0 @@
-#!/bin/sh
-
-OPENMW_PATH="$HOME/.local/src/openmw/openmw-0.47.0-Linux-64BitRC7"
-
-cd "$OPENMW_PATH"
-./openmw-essimporter

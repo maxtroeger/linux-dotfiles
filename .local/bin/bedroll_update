@@ -1,3 +1,0 @@
-#!/bin/sh
-
-rsync -rv --del /home/max/dox/bedroll/ www:/var/www/bedroll.net/

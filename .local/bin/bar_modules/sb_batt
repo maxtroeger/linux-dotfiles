@@ -1,9 +1,0 @@
-#!/bin/sh
-
-battery="/sys/class/power_supply/BAT0"
-case "$(cat "$battery/status")" in
-	"Charging") status="+" ;;
-	"*") status="" ;;
-esac
-capacity=$(cat "$battery/capacity")
-printf " %s" "[bat $status$capacity%]"

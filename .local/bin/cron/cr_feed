@@ -1,8 +1,0 @@
-#!/bin/sh
-
-HOME="/home/$USER"
-
-ping -q -c 1 example.org || exit
-
-/usr/local/bin/sfeed_update '/home/max/.config/sfeed/sfeedrc'
-        kill -41 "$(pidof dwmblocks)"

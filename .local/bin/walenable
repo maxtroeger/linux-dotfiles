@@ -1,0 +1,4 @@
+#!/bin/sh
+
+[ -f "$HOME/.cache/waldisable" ] && rm "$HOME/.cache/waldisable"
+setbg

@@ -1,5 +1,0 @@
-#!/bin/sh
-
-xrandr --output DP2 --off
-xrandr --output LVDS1 --primary
-setbg

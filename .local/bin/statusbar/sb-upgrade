@@ -1,0 +1,9 @@
+#!/bin/sh
+
+echo "Upgrading system...\n"
+
+/usr/bin/sudo /usr/bin/xbps-install -Su
+
+kill -43 "$(pidof dwmblocks)"
+echo "\nSystem update complete\nPress <Enter> to exit"
+read -r _

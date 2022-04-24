@@ -1,0 +1,10 @@
+#!/bin/sh
+
+. "/home/max/.zprofile"
+
+/usr/bin/grep -xq 'down' /sys/class/net/e*/operstate 2>/dev/null && \
+	/usr/bin/grep -xq 'down' /sys/class/net/w*/operstate 2>/dev/null && \
+	exit 0
+
+/usr/local/bin/sfeed_update '/home/max/.config/sfeed/sfeedrc' 2>/dev/null 1>&2
+/usr/bin/kill -41 "$(pidof dwmblocks)"

@@ -1,0 +1,36 @@
+#!/bin/sh
+
+MBSYNCRC="$HOME/.config/mbsync/config"
+
+echo "Syncing mail..."
+
+pgrepoutput="$(pgrep -a Xorg)"
+displays="$(echo "$pgrepoutput" | grep -wo "[0-9]*:[0-9]\+" | sort -u)"
+notify() { [ -n "$pgrepoutput" ] && for x in ${displays:-0:}; do
+		export DISPLAY=$x
+		notify-send --app-name="Mail Update" "New mail!" "📬 $2 new mail(s) in \`$1\` account."
+	done ;}
+
+
+accounts="$(awk '/^Channel/ {print $2}' "$MBSYNCRC")"
+for account in $accounts; do
+	echo "\nAccount: $account\n"
+	acc="$(echo "$account" | sed "s/.*\///")"
+	mbsync -c "$MBSYNCRC" "$acc"
+	new=$(find\
+		"$HOME/.local/share/mail/$acc/INBOX/new/"\
+		-type f -newer "${XDG_CONFIG_HOME:-$HOME/.config}/neomutt/.mailsynclastrun" 2> /dev/null)
+	newcount=$(echo "$new" | sed '/^\s*$/d' | wc -l)
+	case 1 in
+		$((newcount > 0)) ) notify "$acc" "$newcount" ;;
+	esac
+	kill -42 "$(pidof dwmblocks)"
+done
+
+#mbsync -c "$MBSYNCRC" personal canoemail school
+echo "\nIndexing mail...\n"
+notmuch new
+touch "${XDG_CONFIG_HOME:-$HOME/.config}/neomutt/.mailsynclastrun"
+
+echo "\nMail sync complete\nPress <Enter> to exit"
+read -r _

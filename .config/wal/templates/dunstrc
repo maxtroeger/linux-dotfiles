@@ -1,0 +1,29 @@
+[global]
+    monitor = 0
+    follow = keyboard
+    width = 370
+    height = 350
+    offset = 0x19
+    padding = 10
+    horizontal_padding = 10
+    transparency = 20
+    font = Monospace 10
+    format = "<b>%s</b>\n%b"
+
+[urgency_low]
+    background = "{color0}" # color0
+    foreground = "{color7}" # color7
+    frame_color = "{color15}" # color7
+    timeout = 3
+
+[urgency_normal]
+    background = "{color0}" # color0
+    foreground = "{color7}" # color7
+    frame_color = "{color15}" # color7
+    timeout = 5
+
+[urgency_critical]
+    background = "{color0}" # color1
+    foreground = "{color15}" # color15
+    frame_color = "{color11}" # color11
+    timeout = 10

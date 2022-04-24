@@ -1,0 +1,71 @@
+#!/bin/sh
+
+#!/bin/sh
+
+# Displays todays precipication chance (☔) and daily low (🥶) and high (🌞).
+# Usually intended for the statusbar.
+
+# If we have internet, get a weather report from wttr.in and store it locally.
+# You could set up a shell alias to view the full file in a pager in the
+# terminal if desired. This function will only be run once a day when needed.
+secs=3600 # Download a new forecast if one hasn't been downloaded in $secs seconds.
+forecastloc="${XDG_CACHE_HOME:-$HOME/.cache}/forecast"
+weatherreport="${XDG_DATA_HOME:-$HOME/.local/share}/weatherreport"
+
+pickloc() { chosen="$(echo "US: MA: Norfolk County
+US: MA: Middlesex County
+US: NY: Rensselaer County
+US: MN: Bozeman
+XX: XX: Current Location" | sort | dmenu -r -i -l 50 -p "Select a forecast to use as default:")"
+
+# Set continent, state, and city code.
+continentcode=$(echo "$chosen" | sed "s/:.*//")
+statecode=$(echo "$chosen" | sed "s/..: // ; s/:.*//")
+citycode=$(echo "$chosen" | sed "s/.*: // ;")
+
+# Sanity check of selection and ensure user did not escape.
+[ ! -z "$statecode" ] && printf "%s,%s,%s\\n" "$continentcode" "$statecode" "$citycode" > "$forecastloc" ;}
+
+getforecast() {
+	cont="$(cut -d',' -f1 "$forecastloc")"
+	state="$(cut -d',' -f2 "$forecastloc")"
+	city="$(cut -d',' -f3 "$forecastloc" | sed 's/[[:space:]]/_/ ; s/$/&_/')"
+	if [ "$city" = "Current_Location_" ]; then
+		curl -sf "wttr.in/?Fqu" > "$weatherreport" || exit 1
+		printf '%s' "\n\n" >> "$weatherreport"
+		curl -sf "v2.wttr.in/?Fqu" >> "$weatherreport" || exit 1
+	else
+		curl -sf "wttr.in/$city$state?Fqu" > "$weatherreport" || exit 1
+		echo "\n" >> "$weatherreport"
+		curl -sf "v2.wttr.in/$city$state?Fqu" >> "$weatherreport" || exit 1
+	fi ;}
+
+notifyget() {
+	notify-send "🌈 Weather forecast" "Pulling most recent forecast for $(cut -d',' -f3 "$forecastloc")."
+	getforecast ;}
+
+# Some very particular and terse stream manipulation. We get the maximum
+# precipitation chance and the daily high and low from the downloaded file and
+# display them with coresponding emojis.
+showweather() { printf " [%s" "$(sed '16q;d' "$weatherreport" |
+	grep -wo "[0-9]*%" | sort -rn | sed "s/^/☔/g;1q" | tr -d '\n')"
+	sed '13q;d' "$weatherreport" | grep -o "m\\([-+]\\)*[0-9]\\+" | sed 's/+//g' | sort -n -t 'm' -k 2n | sed -e 1b -e '$!d' | tr '\n|m' ' ' | awk '{print " 🥶" $1 "°","🌞" $2 "°"}' ;}
+
+case $BLOCK_BUTTON in
+	1) [ $(($(date '+%s') - $(stat -c %Y "$weatherreport"))) -gt "$secs" ] && notifyget
+	   setsid -f "$TERMINAL" -e less -Srf "$weatherreport" ;;
+	2) pickloc ; notifyget && showweather && setsid -f "$TERMINAL" -e less -Srf "$weatherreport";;
+	3) notify-send "🌈 Weather module" "\- Left click for full forecast.
+- Middle click to update forecast location.
+☔: Chance of rain/snow
+🥶: Daily low
+🌞: Daily high" ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+# The test if our forcecast is updated to the day. If it isn't download a new
+# weather report from wttr.in with the above function.
+[ "$(stat -c %y "$weatherreport" 2>/dev/null | cut -d' ' -f1)" = "$(date '+%Y-%m-%d')" ] ||
+	getforecast
+
+showweather

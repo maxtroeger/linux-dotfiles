@@ -1,7 +1,0 @@
-#!/bin/sh
-
-[ -z "$(pgrep mpd)" ] && exit
-
-pidof -x sb_mpd >/dev/null 2>&1 || sb_mpd >/dev/null 2>&1 &
-
-mpc status | grep -e "\[paused\]" -e "\[playing\]" | sed 's/  */ /g;s/.*playing.*#/ \[ /;s/ (.*/ \]/;s/.*paused.*#/ \[ (P) /;' | tr '\n' '\0'

@@ -1,0 +1,43 @@
+#!/bin/sh
+
+##export ENV="$HOME/.config/shell/kshrc"
+#export ENV="$HOME/.config/zsh/.zshrc"
+#source "$HOME/.zprofile"
+#xrandr --dpi 96
+#
+##xset fp+ /usr/local/share/fonts/terminus
+##xset fp+ /usr/local/share/fonts/ghostscript
+##xset b off
+#
+##xinput set-prop "/dev/wsmouse" "WS Pointer Wheel Emulation" 1
+##xinput set-prop "/dev/wsmouse" "WS Pointer Wheel Emulation Button" 2
+##xinput set-prop "/dev/wsmouse" "WS Pointer Wheel Emulation Axes" 6 7 4 5
+#
+##"$HOME/.local/bin/setbg"
+#setbg &
+#remap &
+#mpd &
+#dunst &
+#xcompmgr &
+#dwmblocks &
+#dwm
+
+# This file runs when a DM logs you into a graphical session.
+# If you use startx/xinit like a Chad, this file will also be sourced.
+
+xrandr --dpi 96		# Set DPI. User may want to use a larger number for larger screens.
+setbg &			# set the background with the `setbg` script
+#xrdb ${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources & xrdbpid=$!	# Uncomment to use Xresources colors/settings on startup
+remap &		# run the remaps script, switching caps/esc and more; check it for more info
+pidof -s unclutter || unclutter -noevents &
+
+
+autostart="mpd xcompmgr unclutter dunst dwmblocks pipewire"
+
+for program in $autostart; do
+	pidof -s "$program" || setsid -f "$program"
+done >/dev/null 2>&1
+
+autodock
+# Ensure that xrdb has finished running before moving on to start the WM/DE.
+#[ -n "$xrdbpid" ] && wait "$xrdbpid"

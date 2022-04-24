@@ -1,0 +1,25 @@
+#!/bin/sh
+
+num=$(ts -l | awk -v numr=0 -v numq=0 '{if (/running/)numr++; if (/queued/)numq++} END{print numr+numq"("numq")"}')
+
+showtasks() {
+	ts -l
+	ts -t
+}
+
+# Handle mouse clicks
+case $BLOCK_BUTTON in
+	1) setsid -f "$TERMINAL" -e ts -t ;;
+	3) notify-send "Tasks module" "🤖: number of running/queued background tasks
+- Left click opens tsp" ;; # Right click
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+[ "$num" = "0(0)" ] && exit
+
+printf '%s'  " [⏰ $num]"
+
+#run=$(find "$NQDIR" -type f | wc -l | tr ' ' '\0')
+#[ "$run" = "0" ] && exit
+#
+#printf '%s' " [jobs $run]"

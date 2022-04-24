@@ -1,0 +1,9 @@
+application/pdf; zathura %s
+text/html; firefox %s
+text/plain; nvim -R %s
+image/*; sxiv -a %s
+video/*; mpv %s
+audio/*; mpv %s
+multipart/alternative; xdg-open %s
+application/pgp-encrypted; gpg2 -d '%s'; copiousoutput;
+application/pgp-keys; gpg2 --import '%s'; copiousoutput;

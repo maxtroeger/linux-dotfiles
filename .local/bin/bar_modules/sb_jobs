@@ -1,6 +1,0 @@
-#!/bin/sh
-
-run=$(find "$NQDIR" -type f | wc -l | tr ' ' '\0')
-[ "$run" = "0" ] && exit
-
-printf '%s' " [jobs $run]"

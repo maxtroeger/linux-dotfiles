@@ -1,0 +1,15 @@
+#!/bin/sh
+
+case $BLOCK_BUTTON in
+	1) setsid -f "$TERMINAL" -e sb-upgrade ;;
+	2) notify-send "🎁 Upgradable packages" "$(/usr/bin/xbps-install -nu | /usr/bin/cut -d' ' -f1,2)" ;;
+	3) notify-send "🎁 Upgrade module" "📦: number of upgradable packages
+- Left click to upgrade packages
+- Middle click to show upgradable packages" ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+PACK="$(/usr/bin/xbps-install -nu | wc -l)"
+[ "$PACK" = 0 ] && exit
+printf '%s\n' " 📦$PACK"
+#printf '%s\n' " [pack $PACK]"

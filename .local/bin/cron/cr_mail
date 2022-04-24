@@ -1,8 +1,0 @@
-#!/bin/sh
-
-HOME="/home/$USER"
-ping -q -c 1 example.org 2>/dev/null 1>&2 || exit
-
-/usr/bin/mbsync -c "$HOME/.config/mbsync/config" -a 2>/dev/null 1>&2
-        /usr/bin/notmuch --config="$HOME/.config/notmuch/config" new 2>/dev/null 1>&2
-        kill -42 "$(pidof dwmblocks)"

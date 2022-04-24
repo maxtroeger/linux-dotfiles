@@ -1,8 +1,0 @@
-#!/bin/sh
-
-[ ! -d "$HOME/pix/scrot" ] && mkdir -p "$HOME/pix/scrot"
-file="$HOME/pix/scrot/scrot-part-$(date '+%y%m%d-%H%M-%S').png"
-notify-send "Taking partial screenshot"
-maim -u -s "$file"
-[ -f "$file" ] && notify-send --icon="$file" "Partial screenshot taken" "$(basename $file)"
-[ ! -f "$file" ] && notify-send "Partial screenshot aborted"

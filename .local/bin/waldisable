@@ -1,0 +1,8 @@
+#!/bin/sh
+
+dunstconf="${XDG_CONFIG_HOME:-$HOME/.config}/dunst/dunstrc"
+zathuraconf="${XDG_CONFIG_HOME:-$HOME/.config}/zathura/zathurarc"
+
+[ -f "$dunstconf.bak" ] && unlink "$dunstconf" && mv "$dunstconf.bak" "$dunstconf"
+[ -f "$zathuraconf.bak" ] && unlink "$zathuraconf" && mv "$zathuraconf.bak" "$zathuraconf"
+touch "$HOME/.cache/waldisable"

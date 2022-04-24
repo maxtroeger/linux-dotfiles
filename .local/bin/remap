@@ -1,6 +1,47 @@
 #!/bin/sh
 
-xset r rate 300 50 &
+# clear before remaping
+setxkbmap -option
+
+# typing speed
+xset r rate 300 50
+
+# make held caps the control key
 setxkbmap -option 'caps:ctrl_modifier'
-xcape -e 'Caps_Lock=Escape'
+
+# clear xcape and make the tapped caps the escape key
+killall xcape 2>/dev/null ; xcape -e 'Caps_Lock=Escape'
+
+# if on a travel keyboard, make the left alt the super key &c.
+	# Coordinate Transformation Matrix
+	# libinput Scroll Methods Available
+	# libinput Scroll Method Enabled
+	# libinput Middle Emulation Enabled Default
+	# libinput Middle Emulation Enabled
+
+lsusb | grep -q "Ultra Nav" && key="Lite-On Tech IBM USB Travel Keyboard with Ultra Nav Mouse"
+
+getProperty () {
+	property="$(xinput --list-props "$key" | grep "$1" -m 1 )"
+	property="${property#*\(}"
+	property="${property%\)*}"
+	printf '%s\n' "$property"
+}
+
+id="$(xinput list | grep -m 1 "Lite-On Tech IBM USB Travel Keyboard with Ultra Nav[[:space:]]*id" | cut -f2 | sed 's/id=//')"
+	setxkbmap -option altwin:swap_lalt_lwin -device "$id" && \
+	xinput set-prop "$key" "$(getProperty "Coordinate Transformation Matrix")" 6, 0, 0, 0, 6, 0, 0, 0, 1 && \
+	xinput set-prop "$key" "$(getProperty "libinput Scroll Method Enabled")" 0 0 1 && \
+	xinput set-prop "$key" "$(getProperty "libinput Middle Emulation Enabled")" 1
+
+# make the menu key super
 xmodmap -e 'keycode 135 = Super_R'
+
+# undo caps if needed
+xset -q | grep "Caps Lock:\s*on" && xdotool key Caps_Lock
+
+# disable touchpad by default
+synclient TouchpadOff=1
+
+#	xinput set-prop "$key" "$(getProperty "libinput Middle Emulation Enabled Default")" 1
+#	xinput set-prop "$key" "$(getProperty "libinput Scroll Methods Available")" 0 0 1 && \

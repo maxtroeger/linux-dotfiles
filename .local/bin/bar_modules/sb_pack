@@ -1,5 +1,0 @@
-#!/bin/sh
-
-PACK="$(xbps-install -nu | wc -l)"
-[ "$PACK" = 0 ] && exit
-printf '%s\n' " [pack $PACK]"
