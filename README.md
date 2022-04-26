@@ -1,4 +1,9 @@
 # Dotfiles
 ---
 
-My public dotfiles and scripts
+The dotfiles and scripts I maintain for use with suckless tools.
+
+Here's a list of programs I recommend:
+* Add
+* These
+* Later
