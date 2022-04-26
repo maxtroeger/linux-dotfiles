@@ -1,0 +1,5 @@
+#!/bin/sh
+
+dir="$XDG_DATA_HOME/torbrowser/tbb/x86_64/tor-browser_en-US/Browser"
+cd "$dir" || exit 0
+[ -f "start-tor-browser" ] && setsid -f ./start-tor-browser "$1"
