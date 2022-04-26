@@ -32,7 +32,7 @@ getforecast() {
 	city="$(cut -d',' -f3 "$forecastloc" | sed 's/[[:space:]]/_/ ; s/$/&_/')"
 	if [ "$city" = "Current_Location_" ]; then
 		curl -sf "wttr.in/?Fqu" > "$weatherreport" || exit 1
-		printf '%s' "\n\n" >> "$weatherreport"
+		echo "\n" >> "$weatherreport"
 		curl -sf "v2.wttr.in/?Fqu" >> "$weatherreport" || exit 1
 	else
 		curl -sf "wttr.in/$city$state?Fqu" > "$weatherreport" || exit 1
