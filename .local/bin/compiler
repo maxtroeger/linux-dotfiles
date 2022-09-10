@@ -8,20 +8,22 @@ ext="${file##*.}"
 cd "$dir" || exit
 
 textype() { \
+	textarget="$(getcomproot "$file" || echo "$file")"
+	echo "$textarget"
 	command="pdflatex"
-	( sed 5q "$file" | grep -i -q "xelatex" ) && command="xelatex"
-	( sed 5q "$file" | grep -i -q "lualatex" ) && command="lualatex"
-	$command --output-directory="$dir" "$base" &&
-	grep -i addbibresource "$file" > /dev/null &&
-	biber --input-directory "$dir" "$base" &&
-	$command --output-directory ="$dir" "$base" &&
-	$command --output-directory="$dir" "$base"
+	( head -n5 "$textarget" | grep -qi 'xelatex' ) && command="xelatex"
+	$command --output-directory="${textarget%/*}" "${textarget%.*}"
+		grep -qi addbibresource "$textarget" &&
+		biber --input-directory "${textarget%/*}" "${textarget%.*}" &&
+		$command --output-directory="${textarget%/*}" "${textarget%.*}" &&
+		$command --output-directory="${textarget%/*}" "${textarget%.*}"
 }
 
 case "$ext" in
 	c) cc "$file" -o "$base" && "$base" ;;
 	h) sudo make install ;;
 	R) R -f "$file" --no-save ;;
+#	ms) eqn "$file" -Tpdf | groff -m ms -T pdf > "$base".pdf ;;
 	ms) groff -m ms -T pdf "$file" > "$base".pdf ;;
 	mom) refer -PS -e "$file" | groff -mom -kept -T pdf > "$base".pdf ;;
 	tex) textype "$file" ;;

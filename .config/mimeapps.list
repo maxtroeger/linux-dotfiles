@@ -38,3 +38,7 @@ application/xhtml+xml=userapp-Firefox-QJ0SD1.desktop;
 application/x-extension-xhtml=userapp-Firefox-QJ0SD1.desktop;
 application/x-extension-xht=userapp-Firefox-QJ0SD1.desktop;
 application/vnd.openxmlformats-officedocument.presentationml.presentation=firefox.desktop;org.pwmt.zathura.desktop;
+video/webm=mpv.desktop;
+application/atom+xml=firefox.desktop;
+application/x-research-info-systems=text.desktop;
+audio/silk=text.desktop;

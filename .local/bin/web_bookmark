@@ -5,5 +5,6 @@ selection=$(cat "$HOME/dox/bmarks" | grep -v -e "^#" -e "^$" | dmenu -l 30 -i -p
 [ -z "$selection" ] && exit
 
 echo  "$selection" | grep "(school)" && echo "$selection" | sed 's/.*http/http/' | xargs -r -I {} "schoolfox" "{}" && exit
+echo  "$selection" | grep ".onion$" && echo "$selection" | sed 's/.*http/http/' | xargs -r -I {} "torbrowser-url" "{}" && exit
 
 echo "$selection" | sed 's/.*http/http/' | xargs -r -I {} "$BROWSER" "{}"

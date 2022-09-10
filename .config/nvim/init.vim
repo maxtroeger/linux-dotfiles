@@ -1,6 +1,16 @@
 let mapleader=","
 
-let vimplug_exists=expand('~/.config/nvim/autoload/plug.vim')
+if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim"'))
+	echo "Downloading junegunn/vim-plug to manage plugins..."
+	silent !mkdir -p ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/
+	silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim
+	autocmd VimEnter * PlugInstall
+endif
+
+map ,, :keepp /<++><CR>ca<
+imap ,, <esc>:keepp /<++><CR>ca<
+
+"let vimplug_exists=expand('~/.config/nvim/autoload/plug.vim')
 call plug#begin(expand('~/.config/nvim/plugged'))
 Plug 'junegunn/goyo.vim'
 Plug 'tpope/vim-surround'
@@ -8,6 +18,7 @@ Plug 'lukesmithxyz/vimling'
 "Plug 'morhetz/gruvbox'
 Plug 'ap/vim-css-color'
 Plug 'vimwiki/vimwiki'
+Plug 'NLKNguyen/papercolor-theme'
 call plug#end()
 
 " Basic additions
@@ -19,7 +30,8 @@ call plug#end()
 	set mouse=a
 	set title
 	set nohlsearch
-	colorscheme delek
+	colorscheme slate
+	"colorscheme slate
 	set noshowmode
 	set noruler
 	set laststatus=0
@@ -53,7 +65,7 @@ call plug#end()
 	"map <leader>f :Goyo \| set bg=light \| set linebreak<CR>
 
 " Save file as sudo on files that require root permission
-	cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
+	cabbrev w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
 
 "" Enable Goyo for mutt writing
 	autocmd BufEnter /tmp/neomutt* :Goyo 80
@@ -61,8 +73,11 @@ call plug#end()
 	autocmd BufEnter /tmp/neomutt* map ZQ :Goyo\|q!<CR>
 
 " Deadkeys (Helpful for French)
-	nm <leader><leader>d :call ToggleDeadKeys()<CR>
-	imap <leader><leader>d <esc>:call ToggleDeadKeys()<CR>a
+	nm <leader>d :call ToggleDeadKeys()<CR>
+	imap <leader>d <esc>:call ToggleDeadKeys()<CR>a
+	nm <leader>i :call ToggleIPA()<CR>
+	imap <leader>i <esc>:call ToggleIPA()<CR>a
+	nm <leader>q :call ToggleProse()<CR>
 
 " Remove trailing whitespace
 	autocmd BufWritePre * %s/\s\+$//e
@@ -75,10 +90,10 @@ call plug#end()
 	map <leader>w :'<,'>:w !wc -w<CR>
 
 " Compile code
-	map <leader>c :w! \| !compiler <c-r>%<CR>
+	map <leader>c :w! \| !compiler "%:p"<CR>
 
 " View output
-	map <leader>p :!opout <c-r>%<CR><CR>
+	map <leader>p :!opout "%:p"<CR>
 
 " Automatically update sxhkd binds
 	autocmd BufWritePost *sxhkdrc !pkill -USR1 sxhkd
@@ -123,3 +138,17 @@ call plug#end()
 	    endif
 	endfunction
 	nnoremap <leader>h :call ToggleHiddenAll()<CR>
+
+" function for toggling colorscheme
+	let s:colorscheme = "slate"
+	function! ToggleColorScheme()
+	    if s:colorscheme  == "slate"
+		let s:colorscheme = "papercolor"
+		set background=light
+	        colorscheme PaperColor
+	    else
+		let s:colorscheme = "slate"
+	        colorscheme slate
+	    endif
+	endfunction
+	nnoremap <leader>i :call ToggleColorScheme()<CR>

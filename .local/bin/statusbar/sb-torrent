@@ -19,8 +19,8 @@ case $BLOCK_BUTTON in
 Module shows number of torrents:
 🛑: paused
 🕰: idle (seeds needed)
-🔼: uploading (unfinished)
-🔽: downloading
+⬆️: uploading (unfinished)
+⬇️: downloading
 ✅: done
 🌱: done and seeding" ;;
 	6) "$TERMINAL" -e "$EDITOR" "$0" ;;

@@ -3,9 +3,9 @@
 if grep -xq 'up' /sys/class/net/e*/operstate 2>/dev/null ; then
 	tag="🌐"
 elif grep -xq 'up' /sys/class/net/w*/operstate 2>/dev/null ; then
+	tag="📶"
 	signal="$(awk '/^\s*w/{ print int($3 * 100 / 70) }' /proc/net/wireless)"
 	[ "$signal" -lt 25 ] && tag="❌"
-	tag="📶"
 elif grep -xq 'down' /sys/class/net/w*/operstate 2>/dev/null ; then
 	grep -xq '0x1003' /sys/class/net/w*/flags && tag="📡" || exit
 else
@@ -13,6 +13,7 @@ else
 fi
 
 vpn="$(sed "s/.*/🔒/" /sys/class/net/tun*/operstate 2>/dev/null)"
+sbx="$(sed "s/.*/🚦/" /sys/class/net/sbx/operstate 2>/dev/null)"
 
 update() {
     sum=0
@@ -20,7 +21,7 @@ update() {
         read -r i < "$arg"
         sum=$(( sum + i ))
     done
-    cache=${XDG_CACHE_HOME:-$HOME/.cache}/${1##*/}
+    cache=/tmp/${1##*/}
     [ -f "$cache" ] && read -r old < "$cache" || old=0
     printf %d\\n "$sum" > "$cache"
     printf %d\\n $(( sum - old ))
@@ -31,11 +32,13 @@ update() {
 rx=$(update /sys/class/net/[ew]*/statistics/rx_bytes)
 tx=$(update /sys/class/net/[ew]*/statistics/tx_bytes)
 
+# Options for wpa_supplicant
+#1) setsid -f st -e nvim "/etc/wpa_supplicant/wpa_supplicant-wlp3s0.conf" ;;
+#2) setsid -f st wpa_cli ;;
+
 case $BLOCK_BUTTON in
-        1) setsid -f st -e nvim "/etc/wpa_supplicant/wpa_supplicant-wlp3s0.conf" ;;
-        2) setsid -f st wpa_cli ;;
-	3) notify-send "📶 Network/traffic module" "\- Left click to edit wifi conf
-- Middle click opens wpa_cli
+        1) setsid -f "$TERMINAL" -e sudo nmtui ;;
+	3) notify-send "📶 Network/traffic module" "\- Left click to open nmtui
 📡: no wifi connection
 ❌: poor wifi connection
 📶: wifi connection with quality
@@ -45,5 +48,5 @@ case $BLOCK_BUTTON in
 	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
-printf " [%s %4sb %4sb]\n" "$tag$vpn" $(numfmt --to=iec $rx $tx)
+printf " [%s %4sb %4sb]\n" "$tag$sbx$vpn" $(numfmt --to=iec $rx $tx)
 #printf " [%s %4sb %4sb]\n" "$tag" $(numfmt --to=iec $rx $tx)

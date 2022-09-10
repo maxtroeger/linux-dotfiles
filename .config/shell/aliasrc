@@ -11,6 +11,8 @@ for command in mount umount sv pacman updatedb su shutdown poweroff reboot ; do
 	alias $command="sudo $command"
 done; unset command
 
+se() { cd ~/.local/bin; $EDITOR $(fzf) ;}
+
 # Verbosity and settings that you pretty much just always are going to want.
 alias \
 	cp="cp -iv" \
@@ -52,6 +54,7 @@ alias \
 	weath="less -S ${XDG_DATA_HOME:-$HOME/.local/share}/weatherreport" \
 	alias abook="abook --datafile='$HOME/.config/abook/addressbook' --config='$HOME/.config/abook/abookrc'" \
 	pdfpc="pdfpc -w both" \
+	mbsync="mbsync -c $MBSYNCRC" \
 	sfeed_update="sfeed_update $HOME/.config/sfeed/sfeedrc" \
 	sfeed_curses="sfeed_curses $HOME/.config/sfeed/feeds/*" \
 	unclutter="unclutter -noevents" \

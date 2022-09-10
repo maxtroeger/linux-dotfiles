@@ -11,8 +11,20 @@ notify() { [ -n "$pgrepoutput" ] && for x in ${displays:-0:}; do
 		notify-send --app-name="Mail Update" "New mail!" "📬 $2 new mail(s) in \`$1\` account."
 	done ;}
 
-
 accounts="$(awk '/^Channel/ {print $2}' "$MBSYNCRC")"
+
+# allow syncing of school mail if enabled
+#if [ -z "$(nmcli | grep rpi_wpa2)" ] && [ -z "$(pidof openconnect)" ]; then
+if [ -z "$(wpa_cli status | grep rpi_wpa2)" ] && [ -z "$(pidof openconnect)" ]; then
+	accounts="$(echo "$accounts" | sed 's/school//')"
+fi
+if [ -z "$(ip link | grep sbx)" ]; then
+	accounts="$(echo "$accounts" | sed 's/sbx//')"
+fi
+#elif [ ! -f "${XDG_CACHE_HOME:-$HOME/.cache}/rpienable" ]; then
+#	accounts="$(echo "$accounts" | sed 's/school//')"
+#fi
+
 for account in $accounts; do
 	echo "\nAccount: $account\n"
 	acc="$(echo "$account" | sed "s/.*\///")"

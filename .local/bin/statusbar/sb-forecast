@@ -10,11 +10,12 @@
 # terminal if desired. This function will only be run once a day when needed.
 secs=3600 # Download a new forecast if one hasn't been downloaded in $secs seconds.
 forecastloc="${XDG_CACHE_HOME:-$HOME/.cache}/forecast"
-weatherreport="${XDG_DATA_HOME:-$HOME/.local/share}/weatherreport"
+weatherreport="${XDG_CACHE_HOME:-$HOME/.cache}/weatherreport"
 
 pickloc() { chosen="$(echo "US: MA: Norfolk County
 US: MA: Middlesex County
 US: NY: Rensselaer County
+US: NY: Troy City
 US: MN: Bozeman
 XX: XX: Current Location" | sort | dmenu -r -i -l 50 -p "Select a forecast to use as default:")"
 

@@ -3,7 +3,7 @@
 basename="$(echo "$1" | sed 's/\.[^\/.]*$//')"
 
 case "$1" in
-	*.tex |*.ms |*.mom |*.me) setsid -f zathura "$basename".pdf ;;
+	*.tex|*.sil|*.m[dse]|*.[rR]md|*.mom|*.[0-9]) target="$(getcomproot "$1" || echo "$1")" ; setsid -f xdg-open "${target%.*}".pdf >/dev/null 2>&1 ;;
 	*.html) "$BROWSER" "$basename".html >/dev/null 2>&1 ;;
 	*.sent) setsid -f sent "$basename".sent ;;
 esac

@@ -2,8 +2,8 @@
 
 . "/home/max/.zprofile"
 
-/usr/bin/grep -xq 'down' /sys/class/net/e*/operstate 2>/dev/null && \
-	/usr/bin/grep -xq 'down' /sys/class/net/w*/operstate 2>/dev/null && \
+/usr/bin/grep -xq 'down' /sys/class/net/e*/operstate && \
+	/usr/bin/grep -xq 'down' /sys/class/net/w*/operstate && \
 	exit 0
 
 /usr/local/bin/sfeed_update '/home/max/.config/sfeed/sfeedrc' 2>/dev/null 1>&2
