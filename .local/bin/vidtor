@@ -1,0 +1,6 @@
+#!/bin/sh
+
+link=$(echo "$1" | sed 's/www\.youtube\.com/yewtu\.be/')
+
+torify mpv --ytdl-raw-options=format="best[height=1080]" "$link" || \
+	torify mpv --ytdl-raw-options=format="best[height=720]" "$link"

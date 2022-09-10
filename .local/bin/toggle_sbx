@@ -1,0 +1,14 @@
+#!/bin/sh
+
+vpn () {
+	sudo wg-quick "$1" sbx
+}
+
+if ip link show | grep sbx ; then
+	vpn down
+	notify-send "🚦 sbx vpn disconnected ✅"
+else
+	notify-send "🚦 Enabling sbx vpn..."
+	vpn up && notify-send "🚦 sbx vpn connected ✅" && exit
+	notify-send "🚦 sbx vpn failed to connect 🚫"
+fi

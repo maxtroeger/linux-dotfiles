@@ -1,0 +1,5 @@
+#!/bin/sh
+
+file=$(ls "$HOME/pix/wallpaper" | sort -R | sed 1q)
+cp "$HOME/pix/wallpaper/$file" "$HOME/.config/wall.png" && \
+xwallpaper --zoom "$HOME/.config/wall.png"

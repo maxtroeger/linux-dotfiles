@@ -1,0 +1,27 @@
+#!/bin/sh
+
+dock() {
+	xrandr --output DP2 --primary --mode 1920x1080 --left-of LVDS1
+}
+
+undock() {
+	xrandr --output DP2 --off
+	xrandr --output LVDS1 --on --primary
+}
+
+
+toggle_dock() {
+	[ -z "$(xrandr | grep 'DP2 connected primary')" ] && action="dock" || action="undock"
+
+	Action=$(echo "$action" | sed 's/\([a-z]\)\([a-zA-Z0-9]*\)/\u\1\2/')
+	string=$(echo "Yes\\nNo" | dmenu -i -p "$Action computer?" || exit)
+
+	case "$string" in
+		"Yes") "$action" ;;
+		*) exit ;;
+	esac
+}
+
+toggle_dock
+setbg
+remap

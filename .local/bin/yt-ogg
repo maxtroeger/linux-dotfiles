@@ -1,0 +1,4 @@
+#!/bin/sh
+
+yt-dlp -x --audio-format vorbis -o "%(upload_date)s-%(title)s-%(id)s.%(ext)s" "$1"
+#yt-dlp -x --embed-metadata --audio-format vorbis --embed-thumbnail -o "%(upload_date)s-%(title)s-%(id)s.%(ext)s" "$1"
