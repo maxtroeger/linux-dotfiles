@@ -1,5 +1,0 @@
-#!/bin/sh
-
-DIR="$HOME/.local/src/dotfiles"
-COPY="$(find "$DIR" -type f | grep -v "\.git\|README\.md")"
-ORIG="$(echo "$COPY" | sed "s/\.local\/src\/dotfiles\///g")"
