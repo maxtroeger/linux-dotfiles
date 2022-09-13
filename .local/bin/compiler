@@ -22,7 +22,7 @@ textype() { \
 case "$ext" in
 	c) cc "$file" -o "$base" && "$base" ;;
 	h) sudo make install ;;
-	R) R -f "$file" --no-save ;;
+	[rR]) R -f "$file" --no-save ;;
 #	ms) eqn "$file" -Tpdf | groff -m ms -T pdf > "$base".pdf ;;
 	ms) groff -m ms -T pdf "$file" > "$base".pdf ;;
 	mom) refer -PS -e "$file" | groff -mom -kept -T pdf > "$base".pdf ;;
