@@ -7,23 +7,18 @@
 #printf '%s' " [$pre $vol%]"
 
 
-vol="$(pamixer --get-volume)"
-
-if [ "$vol" -gt "70" ]; then
-	icon="🔊"
-elif [ "$vol" -gt "30" ]; then
-	icon="🔉"
-elif [ "$vol" -gt "0" ]; then
-	icon="🔈"
-else
-        icon="🔈"
-fi
-
-[ $(pamixer --get-mute) = true ] && icon="🔇"
-
-printf ' [%s\n' "$icon$vol%"
-#printf ' [%s]\n' "$icon$vol%"
-
+#vol="$(pamixer --get-volume)"
+#
+#if [ "$vol" -gt "70" ]; then
+#	icon="🔊"
+#elif [ "$vol" -gt "30" ]; then
+#	icon="🔉"
+#elif [ "$vol" -gt "0" ]; then
+#	icon="🔈"
+#else
+#        icon="🔈"
+#fi
+#[ $(pamixer --get-mute) = true ] && icon="🔇"
 case $BLOCK_BUTTON in
 	1) setsid -f "$TERMINAL" -e pulsemixer ;;
 	2) pamixer -t ;;
@@ -34,3 +29,28 @@ case $BLOCK_BUTTON in
 - Scroll to change." ;;
 	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
+
+vol="$(wpctl get-volume @DEFAULT_AUDIO_SINK@)"
+# If muted, print 🔇 and exit.
+[ "$vol" != "${vol%\[MUTED\]}" ] && printf ' [%s\n' "🔇" && exit
+
+vol="${vol#Volume: }"
+split() {
+	# For ommiting the . without calling and external program.
+	IFS=$2
+	set -- $1
+	printf '%s' "$@"
+}
+vol="$(split "$vol" ".")"
+vol="${vol##0}"
+
+case 1 in
+	$((vol >= 70)) ) icon="🔊" ;;
+	$((vol >= 30)) ) icon="🔉" ;;
+	$((vol >= 1)) ) icon="🔈" ;;
+	* ) printf ' [%s\n' "🔇" && exit;;
+esac
+
+
+printf ' [%s\n' "$icon$vol%"
+#printf ' [%s]\n' "$icon$vol%"

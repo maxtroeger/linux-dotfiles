@@ -37,7 +37,7 @@ tx=$(update /sys/class/net/[ew]*/statistics/tx_bytes)
 #2) setsid -f st wpa_cli ;;
 
 case $BLOCK_BUTTON in
-        1) setsid -f "$TERMINAL" -e sudo nmtui ;;
+        1) setsid -f "$TERMINAL" -e wpa_cli ;;
 	3) notify-send "📶 Network/traffic module" "\- Left click to open nmtui
 📡: no wifi connection
 ❌: poor wifi connection

@@ -51,8 +51,8 @@ alias \
 	lf="lfub" \
 	magit="nvim -c MagitOnly" \
 	ref="shortcuts >/dev/null; source ${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc ; source ${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc" \
-	weath="less -S ${XDG_DATA_HOME:-$HOME/.local/share}/weatherreport" \
-	alias abook="abook --datafile='$HOME/.config/abook/addressbook' --config='$HOME/.config/abook/abookrc'" \
+	weath="less -S ${XDG_CACHE_HOME:-$HOME/.cache}/weatherreport" \
+	abook="abook --datafile='$HOME/.config/abook/addressbook' --config='$HOME/.config/abook/abookrc'" \
 	pdfpc="pdfpc -w both" \
 	mbsync="mbsync -c $MBSYNCRC" \
 	sfeed_update="sfeed_update $HOME/.config/sfeed/sfeedrc" \

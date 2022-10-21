@@ -1,4 +1,5 @@
 #!/bin/sh
 
-yt-dlp -x --audio-format vorbis -o "%(upload_date)s-%(title)s-%(id)s.%(ext)s" "$1"
+#yt-dlp -x --audio-format vorbis -o "%(upload_date)s-%(title)s-%(id)s.%(ext)s" "$1"
+qndl "$feed" "yt-dlp -o '%(upload_date)_%(title)s.%(ext)s' -f bestaudio --audio-format vorbis --embed-metadata --restrict-filenames"
 #yt-dlp -x --embed-metadata --audio-format vorbis --embed-thumbnail -o "%(upload_date)s-%(title)s-%(id)s.%(ext)s" "$1"
