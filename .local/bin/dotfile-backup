@@ -1,7 +1,6 @@
 #!/bin/sh
 
 repodir="$HOME/.local/src/dotfiles"
-pwd="$HOME"
 files="$(cat $HOME/.local/share/dotfiles)"
 bare=".xinitrc
 .zprofile
@@ -9,7 +8,8 @@ bare=".xinitrc
 
 [ ! -d "$repodir" ] && echo "$ERROR: $repodir does not exist" && exit 1
 
-echo "Backing up files in $pwd"
+cd "$HOME"
+echo "Backing up files in $HOME"
 while IFS= read -r bare_file
 do
 	rsync -rvl "$bare_file" "$repodir"
@@ -21,7 +21,7 @@ while IFS= read -r single_file
 do
 	dir="${single_file%/*}"
 	[ ! -d "$repodir/$dir" ] && mkdir -p "$repodir/$dir"
-	rsync -rvl "$pwd/$single_file" "$repodir/$single_file"
+	rsync -rvl "$HOME/$single_file" "$repodir/$single_file"
 done << EOF
 $files
 EOF
