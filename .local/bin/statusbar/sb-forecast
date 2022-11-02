@@ -8,7 +8,7 @@
 # If we have internet, get a weather report from wttr.in and store it locally.
 # You could set up a shell alias to view the full file in a pager in the
 # terminal if desired. This function will only be run once a day when needed.
-secs=3600 # Download a new forecast if one hasn't been downloaded in $secs seconds.
+secs=10800 # Download a new forecast if one hasn't been downloaded in $secs seconds.
 forecastloc="${XDG_CACHE_HOME:-$HOME/.cache}/forecast"
 weatherreport="${XDG_CACHE_HOME:-$HOME/.cache}/weatherreport"
 

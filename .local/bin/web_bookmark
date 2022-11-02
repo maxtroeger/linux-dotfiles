@@ -1,10 +1,9 @@
 #!/bin/sh
 
-selection=$(cat "$HOME/dox/bmarks" | grep -v -e "^#" -e "^$" | dmenu -l 30 -i -p "Open:")
-
+selection=$(grep -v -e "^#" -e "^$" "$HOME/.local/share/snippets" | grep "^http\|^https" | dmenu -l 30 -i -p "Open:")
 [ -z "$selection" ] && exit
+"$BROWSER" "$selection"
 
-echo  "$selection" | grep "(school)" && echo "$selection" | sed 's/.*http/http/' | xargs -r -I {} "schoolfox" "{}" && exit
-echo  "$selection" | grep ".onion$" && echo "$selection" | sed 's/.*http/http/' | xargs -r -I {} "torbrowser-url" "{}" && exit
-
-echo "$selection" | sed 's/.*http/http/' | xargs -r -I {} "$BROWSER" "{}"
+#echo  "$selection" | grep "(school)" && echo "$selection" | sed 's/.*http/http/' | xargs -r -I {} "schoolfox" "{}" && exit
+#echo  "$selection" | grep ".onion$" && echo "$selection" | sed 's/.*http/http/' | xargs -r -I {} "torbrowser-url" "{}" && exit
+#echo "$selecquerytion" | sed 's/.*http/http/' | xargs -r -I {} "$BROWSER" "{}"
