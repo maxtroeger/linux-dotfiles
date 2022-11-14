@@ -10,8 +10,7 @@ showtasks() {
 # Handle mouse clicks
 case $BLOCK_BUTTON in
 	1) setsid -f "$TERMINAL" -e ts -t ;;
-	3) notify-send "Tasks module" "🤖: number of running/queued background tasks
-- Left click opens tsp" ;; # Right click
+	3) notify-send "⏰ Tasks module" "\- Left click opens tsp" ;; # Right click
 	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 

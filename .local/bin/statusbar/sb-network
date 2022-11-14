@@ -14,6 +14,7 @@ fi
 
 vpn="$(sed "s/.*/🔒/" /sys/class/net/tun*/operstate 2>/dev/null)"
 sbx="$(sed "s/.*/🚦/" /sys/class/net/sbx/operstate 2>/dev/null)"
+canoe="$(sed "s/.*/🛶/" /sys/class/net/canoe/operstate 2>/dev/null)"
 
 update() {
     sum=0
@@ -38,7 +39,7 @@ tx=$(update /sys/class/net/[ew]*/statistics/tx_bytes)
 
 case $BLOCK_BUTTON in
         1) setsid -f "$TERMINAL" -e wpa_cli ;;
-	3) notify-send "📶 Network/traffic module" "\- Left click to open nmtui
+	3) notify-send "📶 Network/traffic module" "\- Left click to open wpa_cli
 📡: no wifi connection
 ❌: poor wifi connection
 📶: wifi connection with quality
@@ -48,5 +49,5 @@ case $BLOCK_BUTTON in
 	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
-printf " [%s %4sb %4sb]\n" "$tag$sbx$vpn" $(numfmt --to=iec $rx $tx)
+printf " [%s %4sb %4sb]\n" "$tag$sbx$canoe$vpn" $(numfmt --to=iec $rx $tx)
 #printf " [%s %4sb %4sb]\n" "$tag" $(numfmt --to=iec $rx $tx)
