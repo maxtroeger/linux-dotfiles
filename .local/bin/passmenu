@@ -27,9 +27,16 @@ password_files=( "${password_files[@]%.gpg}" )
 password=$(printf '%s\n' "${password_files[@]}" | "$dmenu" "$@")
 
 [[ -n $password ]] || exit
+pass_cmd=show
+if pass show "$password" | grep -q '^otpauth://'; then
+    pass_cmd=otp
+fi
 
 if [[ $typeit -eq 0 ]]; then
-	pass show -c "$password" 2>/dev/null
+	pass $pass_cmd -c "$password" 2>/dev/null
+	notify-send "🔒 password copied" "$password copied for 45 seconds"
 else
-	pass show "$password" | { IFS= read -r pass; printf %s "$pass"; } | $xdotool
+	pass $pass_cmd "$password" | { IFS= read -r pass; printf %s "$pass"; } |
+		xdotool type --clearmodifiers --file -
+	notify-send "🔒 password copied" "$password copied for 45 seconds"
 fi
