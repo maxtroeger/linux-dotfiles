@@ -30,8 +30,8 @@ call plug#end()
 	set mouse=a
 	set title
 	set nohlsearch
-	colorscheme delek
-	"colorscheme delek
+	colorscheme default
+	"colorscheme default
 	set noshowmode
 	set noruler
 	set laststatus=0
@@ -140,15 +140,15 @@ call plug#end()
 	nnoremap <leader>h :call ToggleHiddenAll()<CR>
 
 " function for toggling colorscheme
-	let s:colorscheme = "delek"
+	let s:colorscheme = "default"
 	function! ToggleColorScheme()
-	    if s:colorscheme  == "delek"
+	    if s:colorscheme  == "default"
 		let s:colorscheme = "papercolor"
 		set background=light
 	        colorscheme PaperColor
 	    else
-		let s:colorscheme = "delek"
-	        colorscheme delek
+		let s:colorscheme = "default"
+	        colorscheme default
 	    endif
 	endfunction
 	nnoremap <leader>i :call ToggleColorScheme()<CR>

@@ -45,7 +45,8 @@ alias \
 	xi="sudo xbps-install" \
 	xr="sudo xbps-remove -R" \
 	xq="xbps-query" \
-	z="zathura"
+	z="zathura" \
+	pushall="git remote | grep -v sbx | xargs -I R git push R master"
 
 alias \
 	lf="lfub" \
