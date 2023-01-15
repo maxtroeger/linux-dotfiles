@@ -1,4 +1,4 @@
 #!/bin/sh
 
 #rsync -rv --del --exclude 'cgi-bin' /home/max/.local/share/www/maxtroeger.xyz/ www:/var/www/maxtroeger.xyz/
-rsync -rv --del --exclude 'discover.html' --exclude 'discover' /home/max/.local/share/www/maxtroeger.xyz/public/ www:/var/www/maxtroeger.xyz/
+rsync -rv --del --exclude 'discover' /home/max/.local/share/www/maxtroeger.xyz/public/ www:/var/www/maxtroeger.xyz/

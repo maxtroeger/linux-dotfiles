@@ -1,10 +1,8 @@
 #!/bin/sh
 
-[ -z "$(pgrep mpd)" ] && exit
+filter() { grep -e "\[paused\]" -e "\[playing\]" | sed '/^volume:/d;s/\\&/&amp;/g;s/  */ /g;s/.*playing.*#/ \[▶️ /;s/ (.*/\]/;s/.*paused.*#/ \[⏸ /;/^ERROR/Q' | paste -sd ' ' -;}
 
 pidof -x sb-mpdup >/dev/null 2>&1 || sb-mpdup >/dev/null 2>&1 &
-
-mpc status | grep -e "\[paused\]" -e "\[playing\]" | sed 's/  */ /g;s/.*playing.*#/ \[▶️ /;s/ (.*/\]/;s/.*paused.*#/ \[⏸ /;' | tr '\n' '\0'
 
 case $BLOCK_BUTTON in
 	1) mpc status | filter ; setsid -f "$TERMINAL" -e ncmpcpp ;;

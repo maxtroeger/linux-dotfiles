@@ -25,6 +25,8 @@ application/x-extension-shtml=userapp-Firefox-QJ0SD1.desktop
 application/xhtml+xml=userapp-Firefox-QJ0SD1.desktop
 application/x-extension-xhtml=userapp-Firefox-QJ0SD1.desktop
 application/x-extension-xht=userapp-Firefox-QJ0SD1.desktop
+x-scheme-handler/punch=keet.desktop
+x-scheme-handler/holepunch=keet.desktop
 
 [Added Associations]
 x-scheme-handler/http=userapp-Firefox-QJ0SD1.desktop;

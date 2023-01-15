@@ -28,5 +28,12 @@ case "$ext" in
 	ms) groff -m ms -T pdf "$file" > "$base".pdf ;;
 	mom) refer -PS -e "$file" | groff -mom -kept -T pdf > "$base".pdf ;;
 	tex) textype "$file" ;;
-	m) octave "$file"
+	m) octave "$file" ;;
+	md) 	if  [ -x "$(command -v lowdown)" ]; then
+			lowdown --parse-no-intraemph "$file" -Tms | groff -mpdfmark -ms -kept -T pdf > "$base".pdf
+		elif [ -x "$(command -v groffdown)" ]; then
+			groffdown -i "$file" | groff -T pdf > "$base".pdf
+		else
+			pandoc -t ms --highlight-style=kate -s -o "$base".pdf "$file"
+		fi ; ;;
 esac
